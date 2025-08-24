@@ -44,7 +44,60 @@ A Qt6 C++ application for creating custom wallpapers by cropping and scaling ima
 
 ## Installation
 
-- use cmake
+### Quick Installation (Recommended)
+
+For Linux and FreeBSD systems, use the provided installation script:
+
+```bash
+./install.sh
+```
+
+This script will:
+- Check for required dependencies
+- Build the application
+- Install it system-wide
+- Update desktop database and icon cache
+- Make it available in your desktop environment's application menu
+
+### Manual Installation
+
+If you prefer to build manually:
+
+1. **Install dependencies**:
+   - **Ubuntu/Debian**: `sudo apt install qt6-base-dev cmake build-essential`
+   - **Fedora**: `sudo dnf install qt6-qtbase-devel cmake gcc-c++`
+   - **Arch Linux**: `sudo pacman -S qt6-base cmake gcc`
+   - **FreeBSD**: `sudo pkg install qt6-base cmake`
+
+2. **Build and install**:
+   ```bash
+   mkdir build
+   cd build
+   cmake .. -DCMAKE_BUILD_TYPE=Release
+   make -j$(nproc)
+   sudo make install
+   ```
+
+3. **Update desktop database** (optional):
+   ```bash
+   sudo update-desktop-database /usr/local/share/applications
+   sudo gtk-update-icon-cache -f -t /usr/local/share/icons/hicolor
+   ```
+
+### Running the Application
+
+After installation, you can:
+- Run from command line: `WallpaperMaker`
+- Find it in your desktop environment's application menu under "Graphics"
+- Right-click on image files to open them with WallpaperMaker
+
+### Uninstalling
+
+To remove WallpaperMaker:
+```bash
+cd build
+sudo make uninstall
+```
 
 ## Usage
 

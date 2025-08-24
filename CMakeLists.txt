@@ -46,3 +46,28 @@ endif()
 install(TARGETS WallpaperMaker
     RUNTIME DESTINATION bin
 )
+
+# Install .desktop file for Linux/FreeBSD desktop environments
+if(UNIX AND NOT APPLE)
+    install(FILES WallpaperMaker.desktop
+        DESTINATION share/applications
+    )
+    
+    # Install icon if it exists (optional)
+    if(EXISTS "${CMAKE_SOURCE_DIR}/icons/wallpapermaker.png")
+        install(FILES icons/wallpapermaker.png
+            DESTINATION share/icons/hicolor/256x256/apps
+            RENAME wallpapermaker.png
+        )
+    endif()
+    
+    # Install smaller icon sizes if they exist
+    foreach(size 16 22 24 32 48 64 128)
+        if(EXISTS "${CMAKE_SOURCE_DIR}/icons/wallpapermaker-${size}.png")
+            install(FILES icons/wallpapermaker-${size}.png
+                DESTINATION share/icons/hicolor/${size}x${size}/apps
+                RENAME wallpapermaker.png
+            )
+        endif()
+    endforeach()
+endif()
