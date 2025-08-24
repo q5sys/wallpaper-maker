@@ -38,6 +38,10 @@ public:
         int height;
         QString name;
         QString description;
+        bool isVertical;
+        
+        Resolution(int w, int h, const QString &n, const QString &d, bool vertical = false)
+            : width(w), height(h), name(n), description(d), isVertical(vertical) {}
     };
 
     explicit ImageProcessor(QObject *parent = nullptr);

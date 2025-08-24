@@ -35,25 +35,41 @@ void ImageProcessor::initializeStaticData()
         return; // Already initialized
     }
     
-    // Initialize supported resolutions
+    // Initialize supported resolutions (horizontal)
     s_resolutions = {
-        {1280, 720, "HD", "1280 × 720 (HD)"},
-        {1366, 768, "WXGA", "1366 × 768 (WXGA)"},
-        {1920, 1080, "Full HD", "1920 × 1080 (Full HD)"},
-        {2560, 1440, "QHD", "2560 × 1440 (QHD)"},
-        {3840, 2160, "4K UHD", "3840 × 2160 (4K UHD)"},
-        {4096, 2160, "Cinema 4K", "4096 × 2160 (Cinema 4K)"},
-        {7680, 4320, "8K UHD", "7680 × 4320 (8K UHD)"},
-        {1920, 1200, "WUXGA", "1920 × 1200 (WUXGA)"},
-        {2560, 1600, "WQXGA", "2560 × 1600 (WQXGA)"},
-        {3840, 2400, "WQUXGA", "3840 × 2400 (WQUXGA)"},
-        {2256, 1504, "3:2 Tablet", "2256 × 1504 (3:2 Tablet)"},
-        {2880, 1920, "3:2 High-res", "2880 × 1920 (3:2 High-res)"},
-        {3000, 2000, "3:2 Ultra", "3000 × 2000 (3:2 Ultra)"},
-        {2560, 1080, "Ultrawide", "2560 × 1080 (Ultrawide)"},
-        {3440, 1440, "Ultrawide QHD", "3440 × 1440 (Ultrawide QHD)"},
-        {5120, 2160, "5K Ultrawide", "5120 × 2160 (5K Ultrawide)"},
-        {5120, 1440, "Super Ultrawide", "5120 × 1440 (Super Ultrawide)"}
+        // Standard horizontal resolutions
+        {1280, 720, "HD", "1280 × 720 (HD)", false},
+        {1366, 768, "WXGA", "1366 × 768 (WXGA)", false},
+        {1920, 1080, "Full HD", "1920 × 1080 (Full HD)", false},
+        {2560, 1440, "QHD", "2560 × 1440 (QHD)", false},
+        {3840, 2160, "4K UHD", "3840 × 2160 (4K UHD)", false},
+        {4096, 2160, "Cinema 4K", "4096 × 2160 (Cinema 4K)", false},
+        {7680, 4320, "8K UHD", "7680 × 4320 (8K UHD)", false},
+        {1920, 1200, "WUXGA", "1920 × 1200 (WUXGA)", false},
+        {2560, 1600, "WQXGA", "2560 × 1600 (WQXGA)", false},
+        {3840, 2400, "WQUXGA", "3840 × 2400 (WQUXGA)", false},
+        {2256, 1504, "3:2 Tablet", "2256 × 1504 (3:2 Tablet)", false},
+        {2880, 1920, "3:2 High-res", "2880 × 1920 (3:2 High-res)", false},
+        {3000, 2000, "3:2 Ultra", "3000 × 2000 (3:2 Ultra)", false},
+        {2560, 1080, "Ultrawide", "2560 × 1080 (Ultrawide)", false},
+        {3440, 1440, "Ultrawide QHD", "3440 × 1440 (Ultrawide QHD)", false},
+        {5120, 2160, "5K Ultrawide", "5120 × 2160 (5K Ultrawide)", false},
+        {5120, 1440, "Super Ultrawide", "5120 × 1440 (Super Ultrawide)", false},
+        
+        // Vertical resolutions (portrait)
+        {720, 1280, "HD Portrait", "720 × 1280 (HD Portrait)", true},
+        {768, 1366, "WXGA Portrait", "768 × 1366 (WXGA Portrait)", true},
+        {1080, 1920, "Full HD Portrait", "1080 × 1920 (Full HD Portrait)", true},
+        {1440, 2560, "QHD Portrait", "1440 × 2560 (QHD Portrait)", true},
+        {2160, 3840, "4K UHD Portrait", "2160 × 3840 (4K UHD Portrait)", true},
+        {2160, 4096, "Cinema 4K Portrait", "2160 × 4096 (Cinema 4K Portrait)", true},
+        {4320, 7680, "8K UHD Portrait", "4320 × 7680 (8K UHD Portrait)", true},
+        {1200, 1920, "WUXGA Portrait", "1200 × 1920 (WUXGA Portrait)", true},
+        {1600, 2560, "WQXGA Portrait", "1600 × 2560 (WQXGA Portrait)", true},
+        {2400, 3840, "WQUXGA Portrait", "2400 × 3840 (WQUXGA Portrait)", true},
+        {1504, 2256, "3:2 Tablet Portrait", "1504 × 2256 (3:2 Tablet Portrait)", true},
+        {1920, 2880, "3:2 High-res Portrait", "1920 × 2880 (3:2 High-res Portrait)", true},
+        {2000, 3000, "3:2 Ultra Portrait", "2000 × 3000 (3:2 Ultra Portrait)", true}
     };
     
     // Initialize output format info

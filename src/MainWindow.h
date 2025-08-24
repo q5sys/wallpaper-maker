@@ -17,6 +17,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QSlider>
 #include <QPushButton>
 #include <QGroupBox>
@@ -64,6 +65,7 @@ private slots:
     // Image processing
     void onImageDropped(const QString &filePath);
     void onResolutionChanged();
+    void onVerticalOrientationChanged();
     void onOutputFormatChanged();
     void onBrightnessChanged();
     void onContrastChanged();
@@ -99,6 +101,7 @@ private:
     
     // Resolution controls
     QComboBox *m_resolutionComboBox;
+    QCheckBox *m_verticalCheckBox;
     QLabel *m_resolutionLabel;
     
     // Format controls
@@ -161,6 +164,7 @@ private:
     void saveSettings();
     void updateControlsFromSettings();
     void updateImageProcessor();
+    void populateResolutionComboBox(bool vertical);
     void showError(const QString &message);
     void showInfo(const QString &message);
     bool confirmUnsavedChanges();

@@ -149,17 +149,15 @@ void MainWindow::setupResolutionComboBox()
     m_resolutionGroup = new QGroupBox("Resolution", this);
     QVBoxLayout *layout = new QVBoxLayout(m_resolutionGroup);
     
+    // Add vertical orientation checkbox
+    m_verticalCheckBox = new QCheckBox("Vertical (Portrait)", this);
+    m_verticalCheckBox->setToolTip("Toggle between horizontal (landscape) and vertical (portrait) orientations");
+    layout->addWidget(m_verticalCheckBox);
+    
     m_resolutionComboBox = new QComboBox(this);
     
-    // Populate with supported resolutions
-    QList<ImageProcessor::Resolution> resolutions = ImageProcessor::getSupportedResolutions();
-    for (const auto &resolution : resolutions) {
-        QString text = QString("%1 (%2×%3)")
-                      .arg(resolution.name)
-                      .arg(resolution.width)
-                      .arg(resolution.height);
-        m_resolutionComboBox->addItem(text, QSize(resolution.width, resolution.height));
-    }
+    // Populate with supported resolutions (initially horizontal only)
+    populateResolutionComboBox(false);
     
     // Set default to Full HD
     int fullHdIndex = m_resolutionComboBox->findText("Full HD*", Qt::MatchStartsWith);
@@ -391,6 +389,7 @@ void MainWindow::setupConnections()
     // Control connections
     connect(m_resolutionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onResolutionChanged);
+    connect(m_verticalCheckBox, &QCheckBox::toggled, this, &MainWindow::onVerticalOrientationChanged);
     connect(m_formatComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onOutputFormatChanged);
     connect(m_qualitySlider, &QSlider::valueChanged, this, &MainWindow::onQualityChanged);
@@ -418,6 +417,13 @@ void MainWindow::loadSettings()
     
     // Splitter state
     m_splitter->restoreState(m_settings->value("splitterState").toByteArray());
+    
+    // Vertical orientation preference
+    bool isVertical = m_settings->value("VerticalOrientation", false).toBool();
+    m_verticalCheckBox->setChecked(isVertical);
+    
+    // Repopulate resolution combo box with correct orientation
+    populateResolutionComboBox(isVertical);
     
     // Last resolution
     int lastResolution = m_settings->value("LastResolution", 2).toInt(); // Default to Full HD
@@ -812,4 +818,73 @@ void MainWindow::enableControls(bool enabled)
     m_fitToWindowAction->setEnabled(enabled);
     m_actualSizeAction->setEnabled(enabled);
     m_toggleCropOverlayAction->setEnabled(enabled);
+}
+
+void MainWindow::populateResolutionComboBox(bool vertical)
+{
+    m_resolutionComboBox->clear();
+    
+    QList<ImageProcessor::Resolution> resolutions = ImageProcessor::getSupportedResolutions();
+    for (const auto &resolution : resolutions) {
+        // Filter resolutions based on orientation
+        if (resolution.isVertical == vertical) {
+            QString text = QString("%1 (%2×%3)")
+                          .arg(resolution.name)
+                          .arg(resolution.width)
+                          .arg(resolution.height);
+            m_resolutionComboBox->addItem(text, QSize(resolution.width, resolution.height));
+        }
+    }
+    
+    // Set default to Full HD (or Full HD Portrait for vertical)
+    QString searchText = vertical ? "Full HD Portrait*" : "Full HD*";
+    int defaultIndex = m_resolutionComboBox->findText(searchText, Qt::MatchStartsWith);
+    if (defaultIndex >= 0) {
+        m_resolutionComboBox->setCurrentIndex(defaultIndex);
+    } else if (m_resolutionComboBox->count() > 0) {
+        // Fallback to first item if Full HD not found
+        m_resolutionComboBox->setCurrentIndex(0);
+    }
+}
+
+void MainWindow::onVerticalOrientationChanged()
+{
+    bool isVertical = m_verticalCheckBox->isChecked();
+    
+    // Remember current selection name to try to match it
+    QString currentName;
+    if (m_resolutionComboBox->currentIndex() >= 0) {
+        QString currentText = m_resolutionComboBox->currentText();
+        // Extract the name part (before the parentheses)
+        int parenIndex = currentText.indexOf('(');
+        if (parenIndex > 0) {
+            currentName = currentText.left(parenIndex).trimmed();
+        }
+    }
+    
+    // Repopulate combo box with appropriate orientation
+    populateResolutionComboBox(isVertical);
+    
+    // Try to find a matching resolution in the new orientation
+    if (!currentName.isEmpty()) {
+        QString targetName = currentName;
+        if (isVertical && !currentName.contains("Portrait")) {
+            targetName += " Portrait";
+        } else if (!isVertical && currentName.contains("Portrait")) {
+            targetName = currentName.replace(" Portrait", "");
+        }
+        
+        int matchIndex = m_resolutionComboBox->findText(targetName + "*", Qt::MatchStartsWith);
+        if (matchIndex >= 0) {
+            m_resolutionComboBox->setCurrentIndex(matchIndex);
+        }
+    }
+    
+    // Update crop overlay if image is loaded
+    if (m_imageLoaded) {
+        onResolutionChanged();
+    }
+    
+    // Save the vertical preference
+    m_settings->setValue("VerticalOrientation", isVertical);
 }
