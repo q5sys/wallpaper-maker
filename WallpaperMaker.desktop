@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WallpaperMaker
+GenericName=Wallpaper Creator
+Comment=A simple tool for creating custom wallpapers by cropping and scaling images to specific resolutions
+Exec=WallpaperMaker
+Icon=wallpapermaker
+Terminal=false
+StartupNotify=true
+Categories=Graphics;Photography;Qt;
+MimeType=image/png;image/jpeg;image/jpg;image/jfif;image/heif;image/heic;image/bmp;image/tiff;image/tif;image/gif;
+Keywords=wallpaper;image;crop;resize;scale;background;desktop;
+StartupWMClass=WallpaperMaker

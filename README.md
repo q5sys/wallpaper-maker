@@ -44,7 +44,7 @@ A Qt6 C++ application for creating custom wallpapers by cropping and scaling ima
 
 ## Installation
 
-### Quick Installation (Recommended)
+### Quick Installation
 
 For Linux and FreeBSD systems, use the provided installation script:
 
@@ -64,10 +64,9 @@ This script will:
 If you prefer to build manually:
 
 1. **Install dependencies**:
-   - **Ubuntu/Debian**: `sudo apt install qt6-base-dev cmake build-essential`
-   - **Fedora**: `sudo dnf install qt6-qtbase-devel cmake gcc-c++`
-   - **Arch Linux**: `sudo pacman -S qt6-base cmake gcc`
-   - **FreeBSD**: `sudo pkg install qt6-base cmake`
+   - compile toolchain
+   - qt6 dev packages
+   - cmake 
 
 2. **Build and install**:
    ```bash
